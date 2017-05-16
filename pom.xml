@@ -4,8 +4,7 @@
 	<groupId>imie.survey-vertx</groupId>
 	<artifactId>Vertx</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
-
+	
 	<properties>
 		<!-- the main class -->
 		<!-- <exec.mainClass>io.vertx.example.HelloWorldEmbedded</exec.mainClass> -->
@@ -19,10 +18,32 @@
 			<artifactId>vertx-core</artifactId>
 			<version>3.4.1</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-rx-java</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mysql-postgresql-client</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+		
+		<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.22</version>
+        </dependency>
+		
 	</dependencies>
 
 	<build>
-
 		<pluginManagement>
 			<plugins>
 				<!-- We specify the Maven compiler plugin as we need to set it to Java 
@@ -37,75 +58,5 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
-		<!-- You only need the part below if you want to build your application 
-			into a fat executable jar. This is a jar that contains all the dependencies 
-			required to run it, so you can just run it with java -jar -->
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>${exec.mainClass}</Main-Class>
-									</manifestEntries>
-								</transformer>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
-								</transformer>
-							</transformers>
-							<artifactSet>
-							</artifactSet>
-							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.4.0</version>
-				<executions>
-					<execution>
-						<!-- run the application using the fat jar -->
-						<id>run-app</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>java</executable>
-							<arguments>
-								<argument>-jar</argument>
-								<argument>target/${project.artifactId}-${project.version}-fat.jar</argument>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>staging</id>
-			<repositories>
-				<repository>
-					<id>staging</id>
-					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-				</repository>
-			</repositories>
-		</profile>
-	</profiles>
 </project>
